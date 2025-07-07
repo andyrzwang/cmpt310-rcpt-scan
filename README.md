@@ -9,6 +9,23 @@ This system addresses the common problem of lost or untracked purchases due to l
 
 
 
+## Install
+
+
+### requirements
+Python version 3.10.0
+
+pytesseract
+EasyOCR
+Pandas
+Tensorflow
+
+
+
+
+
+## credits
+
 ### Data
 Raw data is downloaded from Kaggle.com
 - [Receipt Dataset for information extraction](https://www.kaggle.com/datasets/dhiaznaidi/receiptdatasetssd300v2/data)
