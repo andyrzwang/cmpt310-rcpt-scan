@@ -9,21 +9,24 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 # Importing the grayscale image conversion function from grayscale.py
 from grayscale import grayscale
 
-def give_colored_Image_full_File_Path(file_name):
-    script_dir = os.path.dirname(os.path.abspath(__file__))
-    project_root = os.path.abspath(os.path.join(script_dir, '../../'))
 
-    # project_root = project_root[0:-4:1]
-    print(project_root + '\n')
+from file_full_path import give_colored_Image_full_File_Path
 
-    roo_position = project_root.index('cmpt310-rcpt-scan')
-    project_root = project_root[0:roo_position + len('cmpt310-rcpt-scan') + 1:1]
-    print(project_root + '\n')
+# def give_colored_Image_full_File_Path(file_name):
+#     script_dir = os.path.dirname(os.path.abspath(__file__))
+#     project_root = os.path.abspath(os.path.join(script_dir, '../../'))
 
-    # path = project_root + '\data\dirty\large-receipt-image-dataset-SRD' + "\\" + file_name
-    relative_path = os.path.join('data', 'dirty', 'large-receipt-image-dataset-SRD', file_name)
-    path = os.path.normpath(os.path.join(project_root, relative_path))
-    return path
+#     # project_root = project_root[0:-4:1]
+#     print(project_root + '\n')
+
+#     roo_position = project_root.index('cmpt310-rcpt-scan')
+#     project_root = project_root[0:roo_position + len('cmpt310-rcpt-scan') + 1:1]
+#     print(project_root + '\n')
+
+#     # path = project_root + '\data\dirty\large-receipt-image-dataset-SRD' + "\\" + file_name
+#     relative_path = os.path.join('data', 'dirty', 'large-receipt-image-dataset-SRD', file_name)
+#     path = os.path.normpath(os.path.join(project_root, relative_path))
+#     return path
     
 
 
@@ -51,8 +54,8 @@ def test_grayscale():
     # # Read image directly in grayscale mode
     # # result = cv2.imread(input_path, cv2.IMREAD_GRAYSCALE) # Debug print
 
-    input_path = filePath('1000-receipt.jpg')
-
+    input_path = give_colored_Image_full_File_Path('1000-receipt.jpg')
+    print(input_path)
     result = grayscale(input_path)
 
     # Check if the result is valid
