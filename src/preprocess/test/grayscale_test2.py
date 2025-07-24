@@ -10,7 +10,9 @@ sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')
 from grayscale import grayscale
 
 
-from file_full_path import give_colored_Image_full_File_Path
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from file_full_path import give_colored_Image_full_File_Path 
+
 
 # def give_colored_Image_full_File_Path(file_name):
 #     script_dir = os.path.dirname(os.path.abspath(__file__))
@@ -56,7 +58,8 @@ def test_grayscale():
 
     input_path = give_colored_Image_full_File_Path('1000-receipt.jpg')
     print(input_path)
-    result = grayscale(input_path)
+    image = cv2.imread(input_path)
+    result = grayscale(image)
 
     # Check if the result is valid
     assert result is not None, f"Failed to load or process image at: {input_path}"
