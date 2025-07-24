@@ -21,7 +21,9 @@ def apply_binarization(image):
     # cv2.THRESH_OTSU is the flag that activates Otsu's method.
     ret, otsu_thresholded_img = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
-    print(f"Otsu's thresholding value: {ret}")
+    # ret is the threshold value calculated by the Otsu's method.
+    # for debugging purposes
+    # print(f"Otsu's thresholding value: {ret}")
 
 
     return otsu_thresholded_img
