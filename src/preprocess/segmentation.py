@@ -42,29 +42,28 @@ def main(image, original):
     original = original_scale
     
     # binarization
-    binarized_image = apply_binarization(scaled_image)
+    ret, binarized_image = cv2.threshold(scaled_image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
 
     kernel = np.ones((5,5), np.uint8)
-    erosion = cv2.erode(binarized_image, kernel, iterations = 3)
+    erosion = cv2.erode(binarized_image, kernel, iterations = 1)
     opening = cv2.morphologyEx(erosion, cv2.MORPH_OPEN, kernel)
 
 
     # remove noise
     blurred = cv2.GaussianBlur(opening, (5, 5), 0)
 
-
     # detect white pixels and regions
     rectKernel = cv2.getStructuringElement(cv2.MORPH_RECT, (9, 9))
     # high light white regions
     dilated = cv2.dilate(blurred, rectKernel)
     # identify and draw edges
-    edged = cv2.Canny(dilated, 100, 200, apertureSize=3)
+    edged = cv2.Canny(dilated, 100, 200, apertureSize = 7)
 
 
     # Detect all contours in Canny-edged image
     contours, hierarchy = cv2.findContours(edged, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
     # highlight the contours and store them in a new image
-    image_with_contours = cv2.drawContours(original.copy(), contours, -1, (0,0,255), 3)
+    # image_with_contours = cv2.drawContours(original.copy(), contours, -1, (0,0,255), 3)
     image_with_contours = cv2.drawContours(opening.copy(), contours, -1, (0,0,255), 3)     ## which should I use? original or opening?
 
 
@@ -75,7 +74,7 @@ def main(image, original):
     bordered = cv2.copyMakeBorder(image_with_contours, border_size, border_size, border_size, border_size, cv2.BORDER_CONSTANT, value=255)
     bordered_blurred = cv2.GaussianBlur(bordered, (5, 5), 0)
     bordered_dilated = cv2.dilate(bordered_blurred, rectKernel)
-    bordered_edged = cv2.Canny(bordered_dilated, 100, 200, apertureSize=3)
+    bordered_edged = cv2.Canny(bordered_dilated, 120, 200, apertureSize=3)
     bordered_contours, _ = cv2.findContours(bordered_edged, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
 
     # Shift contours back to original coordinates
