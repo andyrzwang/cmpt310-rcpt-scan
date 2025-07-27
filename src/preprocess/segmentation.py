@@ -99,7 +99,7 @@ def main(image, original):
 
     print("333")
     # save file - - - - CHANGE HERE
-    filesave = image_with_receipt_contour
+    filesave = bordered_contours
     output_filename = '1000-receipt-binary.jpg'
     script_dir = os.path.dirname(os.path.abspath(__file__)) # current file's dir
     output_path = os.path.join(script_dir, output_filename)
