@@ -19,9 +19,16 @@ def removeNoise(image):
 
 
     kernel = np.ones((5,5), np.uint8)
+    # image = cv2.medianBlur(image,3)
+    # image = cv2.bilateralFilter(image,9,75,75)
+
     erosion = cv2.erode(image, kernel, iterations = 1)
 
-    opening = cv2.morphologyEx(erosion, cv2.MORPH_OPEN, kernel)
+    # erosion = cv2.erode(erosion, kernel, iterations = 1)
+
+    # opening = cv2.morphologyEx(erosion, cv2.MORPH_OPEN, kernel)
+    opening = cv2.erode(image, kernel,iterations = 1)
+    opening = cv2.morphologyEx(opening, cv2.MORPH_OPEN, kernel)
 
     return opening
 
@@ -32,7 +39,8 @@ def removeNoise(image):
 
 if __name__ == "__main__":
     # Example usage
-    image_path = give_colored_Image_full_File_Path('1008-receipt.jpg')
+    # image_path = give_colored_Image_full_File_Path('1003-receipt.jpg')
+    image_path = 'C:\workspace\SFUschool\cmpt310\cmpt310-rcpt-scan\data\images\\000.jpg'
 
     print(f"Input image path: {image_path}")  # Debug print
 
@@ -51,7 +59,7 @@ if __name__ == "__main__":
 
     # store image
 
-    filesave = noiseless_image
+    filesave = binarized_image
     output_filename = '1000-receipt-noiseless.jpg'
     script_dir = os.path.dirname(os.path.abspath(__file__)) # current file's dir
     output_path = os.path.join(script_dir, output_filename)
