@@ -49,12 +49,23 @@ def findTotal(lines, ocr_data):
 
     GuessedTotal = []
 
-    for line in lines:
-        
-        upper_line = line.upper()
+    for i in range(len(lines)):
+        line = lines[i]
+        upper_line = line.upper()        
+        # Check if the line contains any of the true total keywords
         if any(true_kw in upper_line for true_kw in true_total_list):
-            print(f"Found true total keyword in line: {line}")
-
+            # check if the line contains any of the fake total keywords
+            if not any(fake_kw in upper_line for fake_kw in fake_total_list):
+                
+                # extrac the total value from the line
+                matches = re.findall(r'\d{1,3}(?:,\d{3})*(?:\.\d{2})|\$\d+(?:\.\d{2})?', line)
+                if matches:
+                    cleaned = re.sub(r'[^\d\.]', '', matches[0])  # strip $, commas, etc.
+                    total_value = float(cleaned)
+                    GuessedTotal.append(total_value)
+            
+           
+    # print(max(GuessedTotal) if GuessedTotal else None)
     return max(GuessedTotal) if GuessedTotal else None
     
 
@@ -124,11 +135,19 @@ def text_detection(image, original_image, image_file_Path):
 
 
 
-
+# test functions
 if __name__ == "__main__":
 
+    # # user input file number
+    # file_number = input("Enter the file number (e.g., 006): ")
+    # file_number = file_number.strip()  # Remove any leading/trailing whitespace
+    # # convert to 3-digit format
+    # file_number = file_number.zfill(3)  # Ensure it's 3 digits
+    # # print(f"File number: {file_number}")
+    # file_name = f"{file_number}.jpg"  # Construct the file name
+
     # Load the image
-    file_name = '000.jpg'  # Replace with your image file name
+    file_name = '015.jpg' 
     image_path = folder_file_path('images', file_name)
     image = cv2.imread(image_path)
     
@@ -150,11 +169,18 @@ if __name__ == "__main__":
     with open(sol_path, 'r') as f:
         sol_data = json.load(f)
     sol_total = sol_data.get('total')
+    # conver sol_total to float
+    sol_total = re.sub(r'[^\d.]', '', str(sol_total))  # remove any non-numeric characters
+    sol_total = float(sol_total) if sol_total else 0.0  # convert
     sol_date = sol_data.get('date')
 
 
+    # compare the results
+    
+    print(f"Total: {total}, Date: {date}")
+    print(f"Solution Total: {sol_total}, Solution Date: {sol_date}")
     # check
-    if total == sol_total:
+    if float(total) == float(sol_total):
         print("The total value is correct.")
     else:
         print("The total value is incorrect.")
