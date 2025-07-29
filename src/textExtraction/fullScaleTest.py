@@ -33,6 +33,8 @@ for i in range(1, 100):
     file_number = i.zfill(3)
     file_name = f"{file_number}.jpg"
     image_path = folder_file_path('images', file_name)
+    if not os.path.exists(image_path):
+        continue
 
     image = cv2.imread(image_path)
     pre_processed_image = image_preProcess(image)

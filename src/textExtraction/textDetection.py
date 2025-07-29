@@ -149,6 +149,9 @@ if __name__ == "__main__":
     # Load the image
     file_name = '015.jpg' 
     image_path = folder_file_path('images', file_name)
+    if not os.path.exists(image_path):
+        print(f"File {image_path} does not exist.")
+        sys.exit(1)
     image = cv2.imread(image_path)
     
     # pre-process the image
