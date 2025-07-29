@@ -30,7 +30,10 @@ def image_preProcess(image):
     return upRight
 
 
-def findTotal(lines):
+def findTotal(lines, ocr_data):
+    '''
+    lines = clean and sorted of ocr_data
+    '''
     # fakeTotal.json is a list of words that represents fake total text
     with open('src\\textExtraction\\fakeTotal.json', 'r') as f:
         fake_data = json.load(f)
@@ -38,13 +41,29 @@ def findTotal(lines):
         true_data = json.load(f)
     
     fake_total_list = fake_data.get('fakeTotalList', [])
-    true_total_list = true_data.get('fakeTotalList', [])
+    true_total_list = true_data.get('trueTotalList', [])
 
-    return 0.0
+    for i in true_total_list:
+        i = i.upper()
+        # print(i)
+
+    GuessedTotal = []
+
+    for line in lines:
+        
+        upper_line = line.upper()
+        if any(true_kw in upper_line for true_kw in true_total_list):
+            print(f"Found true total keyword in line: {line}")
+
+    return max(GuessedTotal) if GuessedTotal else None
+    
 
 
 
-def findDate(lines):
+def findDate(lines, ocr_data):
+    '''
+    lines = clean and sorted of ocr_data
+    '''
     return None
 
 
@@ -63,7 +82,7 @@ def text_detection(image, original_image, image_file_Path):
         text_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
     
     # store text_image to a file
-    text_image.save('text_image.png')
+    # text_image.save('text_image.png')
 
     # pre process the format of the image ----------
 
@@ -86,12 +105,22 @@ def text_detection(image, original_image, image_file_Path):
     )
     # text recognition, extraction and sort ----------
 
-    total = findTotal(lines)
-    date = findDate(lines)
+    total = findTotal(lines, ocr_data)
+    date = findDate(lines, ocr_data)
     
 
     # return total
     return total, date
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -107,7 +136,7 @@ if __name__ == "__main__":
     pre_processed_image = image_preProcess(image)
 
     # Perform text detection+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-    values = text_detection(
+    total, date = text_detection(
         pre_processed_image, # cv2 image
         pre_processed_image, # cv2 image 
         image_path, #path to the original image
@@ -120,19 +149,20 @@ if __name__ == "__main__":
     sol_path = folder_file_path('gdt', imageSol)
     with open(sol_path, 'r') as f:
         sol_data = json.load(f)
-    total_value, date = sol_data.get('total')
+    sol_total = sol_data.get('total')
+    sol_date = sol_data.get('date')
 
 
     # check
-    if values == total_value:
+    if total == sol_total:
         print("The total value is correct.")
     else:
         print("The total value is incorrect.")
     
-    if date == sol_data.get('date'):
-        print("The date is correct.")
-    else:
-        print("The date is incorrect.")
+    # if date == sol_date:
+    #     print("The date is correct.")
+    # else:
+    #     print("The date is incorrect.")
     
 
 
