@@ -22,11 +22,12 @@ import json
 
 def image_preProcess(image):
     # Convert to grayscale
-    # image = rescale(image)  # rescale
+    
     gray = grayscale(image) # grayscale
     bin = apply_binarization(gray) #binarization
     # Fix skewed image
     upRight = fix_tilted_image(bin)  # fix skewed image
+    # scaled = rescale(upRight)  # rescale ----- do not use
     return upRight
 
 
