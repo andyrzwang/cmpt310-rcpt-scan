@@ -8,6 +8,7 @@ from PIL import Image
 import re
 from datetime import datetime
 import json
+import pandas as pd   
 
 # import preprocess modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', 'preprocess')))
@@ -64,8 +65,11 @@ def text_detection(image, original_image, image_file_Path):
     elif len(image.shape) == 3:
         text_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
 
-    ocr_data = pyt.image_to_data(text_image, output_type=pyt.Output.DATAFRAME)
-    ocr_data = ocr_data.dropna(subset=['text'])
+    ocr_data = pyt.image_to_data(text_image, output_type=pyt.Output.DICT)
+    ocr_data = pd.DataFrame(ocr_data)
+
+    # ensure every entry is a string (fill NaNs) so .str works
+    ocr_data['text'] = ocr_data['text'].fillna('').astype(str)
     ocr_data = ocr_data[ocr_data['text'].str.strip() != '']
 
     lines = (
