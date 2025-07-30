@@ -19,10 +19,19 @@ from rescale import rescale
 from fix_tilted_image import fix_tilted_image
 
 def image_preProcess(image):
-    gray = grayscale(image)
-    bin = apply_binarization(gray)
-    upRight = fix_tilted_image(bin)
-    return upRight
+    # tuned hyper-parameters from CV:
+    gray = grayscale(image, clip_limit=2.0, tile_grid_size=(16,16))
+    bin_img = apply_binarization(gray, method='otsu', block_size=21, C=5)
+
+    # inject rescale step into the production pipeline
+    res = rescale(
+        bin_img,
+        font_size_thresh=16,
+        small_scale=1.5,
+        large_scale=1.0
+    )
+    #upRight = fix_tilted_image(bin)
+    return res
 
 def findTotal(lines, ocr_data):
     current_dir = os.path.dirname(os.path.abspath(__file__))
