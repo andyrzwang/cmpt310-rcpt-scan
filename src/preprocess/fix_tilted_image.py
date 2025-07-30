@@ -1,13 +1,12 @@
 import cv2
 import numpy as np
-import os
-import sys
-import pytesseract as pyt
 from scipy.ndimage import interpolation as inter
 
-from file_full_path import folder_file_path
-
 def fix_tilted_image(image, delta=1, limit=5):
+    # Ensure the image is grayscale
+    if len(image.shape) == 3:
+        image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
     def determine_score(arr, angle):
         data = inter.rotate(arr, angle, reshape=False, order=0)
         histogram = np.sum(data, axis=1, dtype=float)
@@ -17,18 +16,23 @@ def fix_tilted_image(image, delta=1, limit=5):
     scores = []
     angles = np.arange(-limit, limit + delta, delta)
     for angle in angles:
-        histogram, score = determine_score(image, angle)
+        _, score = determine_score(image, angle)
         scores.append(score)
-    
+
     best_angle = angles[scores.index(max(scores))]
+
+    # Skip rotation if nearly aligned
+    if abs(best_angle) < 0.5:
+        return best_angle, image
 
     (h, w) = image.shape[:2]
     center = (w // 2, h // 2)
     M = cv2.getRotationMatrix2D(center, best_angle, 1.0)
-    corrected = cv2.warpAffine(image, M, (w, h), flags=cv2.INTER_CUBIC, \
-            borderMode=cv2.BORDER_REPLICATE)
+    corrected = cv2.warpAffine(image, M, (w, h), flags=cv2.INTER_CUBIC,
+                                borderMode=cv2.BORDER_REPLICATE)
 
     return best_angle, corrected
+
 
 
 
