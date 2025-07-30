@@ -19,7 +19,7 @@ import cv2
     return enhanced
 '''
 
-def grayscale(image_file, clip_limit=2.0, tile_grid_size=(8, 8)):
+def grayscale(image_file, clip_limit=2.0, tile_grid_size=(16, 16)):
     """
     - clip_limit: threshold for contrast limiting (float)
     - tile_grid_size: size of grid for CLAHE (tuple of two ints)

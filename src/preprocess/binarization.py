@@ -10,7 +10,7 @@ import sys
 # from file_full_path import give_colored_Image_full_File_Path 
 
 
-def apply_binarization(image, method='otsu', block_size=15, C=5):
+def apply_binarization(image, method='otsu', block_size=21, C=5):
     """
     image: single-channel (grayscale) numpy array
     method: 'otsu' or 'adaptive'
