@@ -10,23 +10,32 @@ import sys
 # from file_full_path import give_colored_Image_full_File_Path 
 
 
-def apply_binarization(image):
-    # apply_binarization base on the grayscale image
-    # using Otsu's thresholding method  
-
-
-    # The first argument '0' indicates that the threshold value will be determined by Otsu's method.
-    # The second argument '255' is the maximum value to use for the binary image.
-    # cv2.THRESH_BINARY ensures a binary output (0 or 255).
-    # cv2.THRESH_OTSU is the flag that activates Otsu's method.
-    ret, otsu_thresholded_img = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
-
-    # ret is the threshold value calculated by the Otsu's method.
-    # for debugging purposes
-    # print(f"Otsu's thresholding value: {ret}")
-
-
-    return otsu_thresholded_img
+def apply_binarization(image, method='otsu', block_size=15, C=5):
+    """
+    image: single-channel (grayscale) numpy array
+    method: 'otsu' or 'adaptive'
+    block_size, C: only used for adaptive thresholding
+    """
+    if method == 'otsu':
+        blurred = cv2.GaussianBlur(image, (5,5), 0)
+        _, thresh = cv2.threshold(
+            blurred, 0, 255,
+            cv2.THRESH_BINARY + cv2.THRESH_OTSU
+        )
+    elif method == 'adaptive':
+        # block_size must be odd
+        bs = block_size if block_size % 2 == 1 else block_size + 1
+        thresh = cv2.adaptiveThreshold(
+            image,
+            255,
+            cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+            cv2.THRESH_BINARY,
+            bs,
+            C
+        )
+    else:
+        raise ValueError(f"Unknown binarization method: {method}")
+    return thresh
 
 
 

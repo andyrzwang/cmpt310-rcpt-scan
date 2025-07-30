@@ -18,51 +18,56 @@ from PIL import Image
 import numpy as np
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
-
-def rescale(image_file):
-    # Convert image_file from cv2 (numpy array) format to PIL Image for pytesseract
-
+def rescale(
+    image_file,
+    font_size_thresh: int = 14,
+    small_scale: float = 2.0,
+    large_scale: float = 1.0,
+    interpolation=cv2.INTER_AREA
+):
+    """
+    Dynamically resize width based on the smallest detected font size.
+    
+    Args:
+      image_file: either a NumPy array (BGR or gray) or a tuple containing arrays.
+      font_size_thresh: if smallest detected font < this, use small_scale; otherwise use large_scale.
+      small_scale: multiplier to apply when fonts are small.
+      large_scale: multiplier to apply when fonts are large.
+      interpolation: OpenCV interpolation flag.
+      
+    Returns:
+      Resized NumPy array.
+    """
+    # 1) Extract the first NumPy array if a tuple was passed
     if isinstance(image_file, tuple):
-        # Pick the first valid NumPy array
         image2 = next((x for x in image_file if isinstance(x, np.ndarray)), None)
     else:
         image2 = image_file
 
-    text_image = Image.fromarray(cv2.cvtColor(image2, cv2.COLOR_BGR2RGB))
-    if len(image2.shape) == 2:  # grayscale
-        text_image = Image.fromarray(image2)
-    elif len(image2.shape) == 3:  # BGR color
-        text_image = Image.fromarray(cv2.cvtColor(image2, cv2.COLOR_BGR2RGB))
-
-    data = pyt.image_to_data(text_image, output_type=pyt.Output.DICT)
-
-    font_sizes_in_pixels = []
-    for i in range(len(data['text'])):
-        if data['text'][i].strip() != '':  # Ensure it's not an empty string
-            height = data['height'][i]
-            font_sizes_in_pixels.append(height)
-    
-    smallest_font_size = min(font_sizes_in_pixels)
-
-    # get the height and width of the image
-    
-    height, width = image2.shape[:2]
-    # print(f"Name: {id}, Height: {height}, Width: {width}")
-
-    if smallest_font_size < 14:
-        multiplier = 2
+    # 2) Build a PIL image for pytesseract
+    if len(image2.shape) == 2:  
+        pil_img = Image.fromarray(image2)
     else:
-        multiplier = 1
+        pil_img = Image.fromarray(cv2.cvtColor(image2, cv2.COLOR_BGR2RGB))
 
-    # set new width and new height
-    new_width = width * multiplier 
-    new_height = height
-    
-    # resize the image with new height
-    resized_image = cv2.resize(image2, (new_width, new_height))
+    # 3) OCR to get word‐bounding‐box heights
+    data = pyt.image_to_data(pil_img, output_type=pyt.Output.DICT)
+    font_sizes = [
+        data['height'][i]
+        for i in range(len(data['text']))
+        if data['text'][i].strip() != ''
+    ]
 
-    #return
-    return resized_image
+    # 4) Determine multiplier
+    smallest = min(font_sizes) if font_sizes else font_size_thresh
+    multiplier = small_scale if smallest < font_size_thresh else large_scale
+
+    # 5) Resize width only (keep original height)
+    h, w = image2.shape[:2]
+    new_w = int(w * multiplier)
+    resized = cv2.resize(image2, (new_w, h), interpolation=interpolation)
+
+    return resized
 
 
 # # testing function
