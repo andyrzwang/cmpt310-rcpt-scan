@@ -5,7 +5,9 @@ import cv2
 # It will take in an input of an images file path, then 
 # covert it to a grey scale image using the cv2 library 
 # Lastly it will return the new grayscale image
-def grayscale(image_file):
+
+# with CLAHE (Contrast Limited Adaptive Histogram Equalization)
+'''def grayscale(image_file):
 
     # grayscale the image
     gray = cv2.cvtColor(image_file, cv2.COLOR_BGR2GRAY)
@@ -15,4 +17,13 @@ def grayscale(image_file):
     # apply clahe to the grayscale image
     enhanced = clahe.apply(gray)
     return enhanced
+'''
 
+def grayscale(image_file):
+
+    # Converting image to grayscale
+    # img_gray_mode = cv2.imread(file_path, cv2.IMREAD_GRAYSCALE)
+    img_gray_mode = cv2.cvtColor(image_file, cv2.COLOR_BGR2GRAY)
+
+    # Returning the new grayscale image
+    return img_gray_mode
