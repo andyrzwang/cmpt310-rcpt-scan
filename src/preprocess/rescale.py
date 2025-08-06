@@ -20,7 +20,7 @@ sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 def rescale(
     image_file,
-    font_size_thresh: int = 16,
+    font_size_thresh: int = 14,
     small_scale: float = 1.5,
     large_scale: float = 1.0,
     interpolation=cv2.INTER_AREA
