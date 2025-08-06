@@ -72,6 +72,78 @@ def findTotal(lines, ocr_data):
 
 
 
+def findTotal_StoredText(lines, ocr_data):
+    '''
+    lines = clean and sorted of ocr_data
+    '''
+    # fakeTotal.json is a list of words that represents fake total text
+    with open('src\\textExtraction\\fakeTotal.json', 'r') as f:
+        fake_data = json.load(f)
+    with open('src\\textExtraction\\trueTotal.json', 'r') as f:
+        true_data = json.load(f)
+    
+    fake_total_list = fake_data.get('fakeTotalList', [])
+    true_total_list = true_data.get('trueTotalList', [])
+
+    for i in true_total_list:
+        i = i.upper()
+        # print(i)
+
+    GuessedTotal = []
+
+    lines_with_possible_total = []
+
+    lines_with_true_total = []
+
+
+    for i in range(len(lines)):
+        line = lines[i]
+        upper_line = line.upper()        
+        # Check if the line contains any of the true total keywords
+        if any(true_kw in upper_line for true_kw in true_total_list):
+            lines_with_possible_total.append(line)
+            # check if the line contains any of the fake total keywords
+            if not any(fake_kw in upper_line for fake_kw in fake_total_list):
+                lines_with_true_total.append(line)
+                
+                # extrac the total value from the line
+                matches = re.findall(r'\d{1,3}(?:,\d{3})*(?:\.\d{2})|\$\d+(?:\.\d{2})?', line)
+                if matches:
+                    cleaned = re.sub(r'[^\d\.]', '', matches[0])  # strip $, commas, etc.
+                    total_value = float(cleaned)
+                    GuessedTotal.append(total_value)
+    
+
+
+    #00000000000000000000000000000000000000000000000000000\
+
+    output_filename = 'find_total_2.txt'
+    script_dir = os.path.dirname(os.path.abspath(__file__)) # current file's dir
+    
+    output_path = os.path.join(script_dir, output_filename)
+    with open(output_path, "w", encoding="utf-8") as f:
+        f.write("Lines with possible total:\n")
+        for line in lines_with_possible_total:
+            f.write(line + "\n")
+        f.write("\n\n\n")
+        f.write("Lines with true total in it:\n")
+        for line in lines_with_true_total:
+            f.write(line + "\n")
+        f.write("\n\n\n")
+        f.write("Guessed Total:\n")
+        for total in GuessedTotal:
+            f.write(str(total) + "\n")
+        f.write("\n\n\n")
+        f.write("True Total List:\n")
+        f.write(str(max(GuessedTotal)))
+
+    #11111111111111111111111111111111111111111111111111111
+
+
+    # print(max(GuessedTotal) if GuessedTotal else None)
+    return max(GuessedTotal) if GuessedTotal else None
+
+
 def findDate(lines, ocr_data):
     '''
     lines = clean and sorted of ocr_data
@@ -80,6 +152,7 @@ def findDate(lines, ocr_data):
 
 
 def text_detection(image, original_image, image_file_Path):
+
     # pre process the format of the image ++++++++++
     if isinstance(image, tuple):
         # Pick the first valid NumPy array
@@ -100,6 +173,29 @@ def text_detection(image, original_image, image_file_Path):
 
     # text recognition, extraction and sort ++++++++++
     ocr_data = pyt.image_to_data(text_image, output_type = pyt.Output.DATAFRAME)
+
+
+    #00000000000000000000000000000000000000000000000000000
+
+
+    image_with_boxes = cv2.cvtColor(image.copy(), cv2.COLOR_GRAY2BGR)
+
+    # Loop through OCR data and draw red boxes
+    for i, row in ocr_data.iterrows():
+        if row['text'] and isinstance(row['text'], str) and row['conf'] > 0:
+            x, y, w, h = row['left'], row['top'], row['width'], row['height']
+            cv2.rectangle(image_with_boxes, (x, y), (x + w, y + h), (0, 0, 255), 2)  # Red box
+
+    filesave = image_with_boxes
+    output_filename = 'text_Detection_1.jpg'
+    script_dir = os.path.dirname(os.path.abspath(__file__)) # current file's dir
+    output_path = os.path.join(script_dir, output_filename)
+
+    cv2.imwrite(output_path, filesave)
+
+    print(f"Image with highlighted text saved to: {output_path}")
+
+    #111111111111111111111111111111111111111111111111111111
     
 
     # Clean the dataframe
@@ -115,9 +211,25 @@ def text_detection(image, original_image, image_file_Path):
         .apply(lambda words: ' '.join(words.tolist()))
         .tolist()
     )
+
+    #00000000000000000000000000000000000000000000000000000\
+
+    output_filename = 'text_Detection_2.txt'
+    script_dir = os.path.dirname(os.path.abspath(__file__)) # current file's dir
+    
+    output_path = os.path.join(script_dir, output_filename)
+    with open(output_path, "w", encoding="utf-8") as f:
+        for line in lines:
+            f.write(line + "\n")
+
+    #11111111111111111111111111111111111111111111111111111
+
+
+
     # text recognition, extraction and sort ----------
 
-    total = findTotal(lines, ocr_data)
+    # total = findTotal(lines, ocr_data)
+    total = findTotal_StoredText(lines, ocr_data) # -------
     date = findDate(lines, ocr_data)
     
 

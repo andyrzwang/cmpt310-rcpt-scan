@@ -1,0 +1,27 @@
+Lines with possible total:
+EA, PY EVP ~ AMOUNT
+Total Qty. : 8 "25.80
+SUB-TOTAL (BX) : 25.80
+TOTAL TAX : 4.65
+TOTAL : 27.35
+maven AMOUNT TAX
+“TOTAL: 25.80 1.55
+
+
+
+Lines with true total in it:
+EA, PY EVP ~ AMOUNT
+TOTAL : 27.35
+maven AMOUNT TAX
+“TOTAL: 25.80 1.55
+
+
+
+Guessed Total:
+27.35
+25.8
+
+
+
+True Total List:
+27.35
