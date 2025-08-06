@@ -24,14 +24,16 @@ def image_preProcess(image):
     bin_img = apply_binarization(gray, method='otsu', block_size=21, C=5)
 
     # inject rescale step into the production pipeline
+    '''
     res = rescale(
         bin_img,
         font_size_thresh=16,
         small_scale=1.5,
         large_scale=1.0
     )
-    #upRight = fix_tilted_image(bin)
-    return res
+    '''
+    upRight = fix_tilted_image(bin)
+    return upRight
 
 def findTotal(lines, ocr_data):
     current_dir = os.path.dirname(os.path.abspath(__file__))
