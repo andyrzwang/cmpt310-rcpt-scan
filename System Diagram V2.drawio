@@ -1,0 +1,61 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/27.0.9 Chrome/134.0.6998.205 Electron/35.4.0 Safari/537.36" version="27.0.9">
+  <diagram name="Receipt OCR Pipeline" id="receipt-ocr-pipeline">
+    <mxGraphModel dx="946" dy="766" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="r2w4zaUNMGqcp0cjyL4R-16" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="170" y="80" width="410" height="200" as="geometry" />
+        </mxCell>
+        <mxCell id="2" value="Receipt Image Input" style="shape=document;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="30" y="100" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="3" value="Grayscale" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#DAE8FC;" parent="1" vertex="1">
+          <mxGeometry x="200" y="100" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="4" value="Binarization&lt;div&gt;(Otsu)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#D5E8D4;" parent="1" vertex="1">
+          <mxGeometry x="400" y="100" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="5" value="Skew Correction&lt;div&gt;(Score-Based)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#FFF2CC;" parent="1" vertex="1">
+          <mxGeometry x="400" y="190" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6" value="OCR (PyTesseract)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F8CECC;" parent="1" vertex="1">
+          <mxGeometry x="195" y="290" width="160" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="7" value="Total Amount&lt;div&gt;Extraction&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#F5F5F5;" parent="1" vertex="1">
+          <mxGeometry x="205" y="390" width="140" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="8" value="Full-Scale Test&lt;div&gt;(Accuracy Eval)&lt;/div&gt;" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#E1D5E7;" parent="1" vertex="1">
+          <mxGeometry x="370" y="390" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="9" style="endArrow=block;" parent="1" source="2" target="3" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="10" style="endArrow=block;" parent="1" source="3" target="4" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="11" style="endArrow=block;" parent="1" source="4" target="5" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="12" style="endArrow=block;" parent="1" source="5" target="6" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="13" style="endArrow=block;" parent="1" source="6" target="7" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="14" style="endArrow=block;" parent="1" source="7" target="8" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2w4zaUNMGqcp0cjyL4R-18" value="Preprocessing" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="290" y="50" width="60" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="r2w4zaUNMGqcp0cjyL4R-19" value="Text Extraction" style="text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="290" y="480" width="100" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="r2w4zaUNMGqcp0cjyL4R-20" value="" style="rounded=0;whiteSpace=wrap;html=1;fillColor=none;strokeWidth=2;dashed=1;dashPattern=8 8;" vertex="1" parent="1">
+          <mxGeometry x="170" y="280" width="410" height="201" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
