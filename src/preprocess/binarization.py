@@ -15,16 +15,20 @@ def apply_binarization(image):
     # using Otsu's thresholding method  
 
 
-    # The first argument '0' indicates that the threshold value will be determined by Otsu's method.
-    # The second argument '255' is the maximum value to use for the binary image.
-    # cv2.THRESH_BINARY ensures a binary output (0 or 255).
-    # cv2.THRESH_OTSU is the flag that activates Otsu's method.
-    ret, otsu_thresholded_img = cv2.threshold(image, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU)
+    # Step 1: Enhance contrast using CLAHE
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    contrast_img = clahe.apply(image)
 
-    # ret is the threshold value calculated by the Otsu's method.
-    # for debugging purposes
-    # print(f"Otsu's thresholding value: {ret}")
+    # Step 2: Optional Gaussian blur to reduce noise
+    blurred = cv2.GaussianBlur(contrast_img, (3, 3), 0)
 
+    # Step 3: Apply Otsu's thresholding
+    ret, otsu_thresholded_img = cv2.threshold(
+        blurred, 0, 255, cv2.THRESH_BINARY + cv2.THRESH_OTSU
+    )
+
+    # Optional debug
+    # print(f"Otsu's threshold value: {ret}")
 
     return otsu_thresholded_img
 
