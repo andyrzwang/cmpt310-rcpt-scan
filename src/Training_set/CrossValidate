@@ -23,7 +23,7 @@ from fix_tilted_image  import fix_tilted_image
 # NOTE: rescale removed
 
 #  import your OCR + total extraction routine 
-from textDetection      import text_detection
+from textExtraction.textDetection      import text_detection
 
 
 def evaluate_single_config(imgs, sols, params, kf, progress_callback=None):
