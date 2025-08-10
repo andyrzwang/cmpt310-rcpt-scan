@@ -9,6 +9,7 @@ import sys
 # sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 # from file_full_path import give_colored_Image_full_File_Path 
 
+'''
 
 def apply_binarization(image):
     # apply_binarization base on the grayscale image
@@ -31,7 +32,33 @@ def apply_binarization(image):
     # print(f"Otsu's threshold value: {ret}")
 
     return otsu_thresholded_img
-
+'''
+def apply_binarization(image, method='otsu', block_size=21, C=5):
+    """
+    image: single-channel (grayscale) numpy array
+    method: 'otsu' or 'adaptive'
+    block_size, C: only used for adaptive thresholding
+    """
+    if method == 'otsu':
+        blurred = cv2.GaussianBlur(image, (3,3), 0)
+        _, thresh = cv2.threshold(
+            blurred, 0, 255,
+            cv2.THRESH_BINARY + cv2.THRESH_OTSU
+        )
+    elif method == 'adaptive':
+        # block_size must be odd
+        bs = block_size if block_size % 2 == 1 else block_size + 1
+        thresh = cv2.adaptiveThreshold(
+            image,
+            255,
+            cv2.ADAPTIVE_THRESH_GAUSSIAN_C,
+            cv2.THRESH_BINARY,
+            bs,
+            C
+        )
+    else:
+        raise ValueError(f"Unknown binarization method: {method}")
+    return thresh
 
 
 
