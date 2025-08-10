@@ -40,7 +40,7 @@ The program then sort the table and group columns that have the same block numbe
 **Out Put**
 
 After run the fullScaleTest.py file, it will generate a csv files with extracted total amount and the correct total amount. 
-
+The file path is **cmpt310-rcpt-scan\data\dataOut\results.csv**
 
 
 
