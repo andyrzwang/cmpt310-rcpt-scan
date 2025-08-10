@@ -111,6 +111,7 @@ def text_detection(image, original_image, image_file_Path):
 
     # Clean the dataframe
     ocr_data = ocr_data.dropna(subset=['text'])
+    ocr_data['text'] = ocr_data['text'].astype(str)  # Ensure all text entries are strings
     ocr_data = ocr_data[ocr_data['text'].str.strip() != '']
 
     # Store OCR data to csv
