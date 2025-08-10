@@ -22,7 +22,7 @@ from binarization       import apply_binarization
 from fix_tilted_image  import fix_tilted_image
 # NOTE: rescale removed
 
-#  import your OCR + total extraction routine 
+#  import OCR + total extraction routine 
 from textDetection      import text_detection
 
 
@@ -72,7 +72,7 @@ def evaluate_single_config(imgs, sols, params, kf, progress_callback=None):
             sol_val = re.sub(r'[^\d.]', '', str(sol.get('total', 0.0))) or "0"
             sol_total = float(sol_val)
             
-            # f) compare (strict equality to match your fullScaleTest behavior)
+            # f) compare (strict equality to match fullScaleTest behavior)
             pred = float(total) if total is not None else 0.0
             if pred == sol_total:
                 correct += 1
