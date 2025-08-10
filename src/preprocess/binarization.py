@@ -16,7 +16,7 @@ def apply_binarization(image):
 
 
     # Step 1: Enhance contrast using CLAHE
-    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(8, 8))
+    clahe = cv2.createCLAHE(clipLimit=2.0, tileGridSize=(16, 16))
     contrast_img = clahe.apply(image)
 
     # Step 2: Optional Gaussian blur to reduce noise

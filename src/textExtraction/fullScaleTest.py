@@ -105,4 +105,4 @@ def full_scale_test(maxFile):
 
 
 if __name__ == "__main__":
-    full_scale_test(20)
+    full_scale_test(30)
