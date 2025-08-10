@@ -32,6 +32,7 @@ def image_preProcess(image):
 
 
 def findTotal(lines, ocr_data):
+    
     '''
     lines = clean and sorted of ocr_data
     '''
@@ -84,6 +85,8 @@ def text_detection(image, original_image, image_file_Path):
     if isinstance(image, tuple):
         # Pick the first valid NumPy array
         image = next((x for x in image if isinstance(x, np.ndarray)), None)
+
+    
     
 
     text_image = Image.fromarray(cv2.cvtColor(image, cv2.COLOR_BGR2RGB))
@@ -100,7 +103,6 @@ def text_detection(image, original_image, image_file_Path):
 
     # text recognition, extraction and sort ++++++++++
     ocr_data = pyt.image_to_data(text_image, output_type = pyt.Output.DATAFRAME)
-    
 
     # Clean the dataframe
     ocr_data = ocr_data.dropna(subset=['text'])
@@ -116,7 +118,6 @@ def text_detection(image, original_image, image_file_Path):
         .tolist()
     )
     # text recognition, extraction and sort ----------
-
     total = findTotal(lines, ocr_data)
     date = findDate(lines, ocr_data)
     
@@ -148,7 +149,7 @@ if __name__ == "__main__":
     # file_name = f"{file_number}.jpg"  # Construct the file name
 
     # Load the image
-    file_name = '015.jpg' 
+    file_name = '066.jpg' 
     image_path = folder_file_path('images', file_name)
     if not os.path.exists(image_path):
         print(f"File {image_path} does not exist.")
@@ -157,7 +158,6 @@ if __name__ == "__main__":
     
     # pre-process the image
     pre_processed_image = image_preProcess(image)
-
     # Perform text detection+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
     total, date = text_detection(
         pre_processed_image, # cv2 image
@@ -184,7 +184,8 @@ if __name__ == "__main__":
     print(f"Total: {total}, Date: {date}")
     print(f"Solution Total: {sol_total}, Solution Date: {sol_date}")
     # check
-    if float(total) == float(sol_total):
+
+    if total is not None and float(total) == float(sol_total):
         print("The total value is correct.")
     else:
         print("The total value is incorrect.")

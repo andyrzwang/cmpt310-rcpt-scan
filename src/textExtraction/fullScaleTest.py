@@ -32,14 +32,14 @@ def full_scale_test(maxFile):
     found_date_list = []
 
     sol_total_list = []
-    sol_date_list = []
+    # sol_date_list = []
 
     aCounter = 0
 
     with progressbar.ProgressBar(max_value=maxFile) as bar:
         
 
-        for i in range(1, maxFile):
+        for i in range(0, maxFile):
             bar.next()
 
             i = str(i)
@@ -66,14 +66,14 @@ def full_scale_test(maxFile):
             # conver sol_total to float
             sol_total = re.sub(r'[^\d.]', '', str(sol_total))  # remove any non-numeric characters
             sol_total = float(sol_total) if sol_total else 0.0  # convert
-            sol_date = sol_data.get('date')
+            # sol_date = sol_data.get('date')
 
             # append
             file_name_list.append(file_name)
             found_total_list.append(total)
-            found_date_list.append(date)
+            # found_date_list.append(date)
             sol_total_list.append(sol_total)
-            sol_date_list.append(sol_date)
+            # sol_date_list.append(sol_date)
 
             if total is None:
                 total = 0.0
@@ -87,9 +87,9 @@ def full_scale_test(maxFile):
     data = {
         'file_name': file_name_list,
         'found_total': found_total_list,
-        'found_date': found_date_list,
-        'sol_total': sol_total_list,
-        'sol_date': sol_date_list
+        # 'found_date': found_date_list,
+        'sol_total': sol_total_list
+        # 'sol_date': sol_date_list
     }
     df = pd.DataFrame(data)
     output_path = folder_file_path('dataOut', 'results.csv')
@@ -105,4 +105,4 @@ def full_scale_test(maxFile):
 
 
 if __name__ == "__main__":
-    full_scale_test(30)
+    full_scale_test(100)

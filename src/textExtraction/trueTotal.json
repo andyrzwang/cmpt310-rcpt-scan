@@ -10,6 +10,7 @@
         "BALANCE DUE", 
         "NET TOTAL", 
         "AMOUNT PAYABLE",
-        "TOTAL WITH GST"
+        "TOTAL WITH GST",
+        "VISA CARD"
     ]
 }
