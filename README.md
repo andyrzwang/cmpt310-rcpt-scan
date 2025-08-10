@@ -16,6 +16,8 @@ The project finds the total from a receipt photo and extracting that into text, 
 
 ![System Diagram](/System%20DiagramV2.png)
 
+** Hyper Parameter Trainin**
+We have our cross validation training and preprocessing functions with hyper parameters on a seperate branch called IncreaseAcc. 
 
 **Image Data Set**
 
