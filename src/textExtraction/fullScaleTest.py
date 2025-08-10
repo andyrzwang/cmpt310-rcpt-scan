@@ -26,7 +26,7 @@ import json
 
 
 
-def full_scale_test(maxFile):
+def full_scale_test(minFile, maxFile):
     file_name_list = []
     found_total_list = []
     found_date_list = []
@@ -36,10 +36,10 @@ def full_scale_test(maxFile):
 
     aCounter = 0
 
-    with progressbar.ProgressBar(max_value=maxFile) as bar:
+    with progressbar.ProgressBar(max_value=maxFile - minFile) as bar:
         
 
-        for i in range(0, maxFile):
+        for i in range(minFile, maxFile):
             bar.next()
 
             i = str(i)
@@ -105,4 +105,7 @@ def full_scale_test(maxFile):
 
 
 if __name__ == "__main__":
-    full_scale_test(100)
+    # parameters for full scale test
+    minFile = 0
+    maxFile = 100
+    full_scale_test(minFile, maxFile)
