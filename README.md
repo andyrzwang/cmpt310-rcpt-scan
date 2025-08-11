@@ -11,8 +11,6 @@ Daniel Shi, Farzan Ustad and Andy Wang
 
 The project finds the total from a receipt photo and extracting that into text, this can also reads a folder of receipts and export a csv file. This is useful when users may want to keep track of receipt totals but do not want to manually input it every time.
 
-> Notes: All other documents, such as the project proposal, Milestones 1 and 2, and the demo poster, are stored in the document folder.
-
 
 ## Structure of the Project
 
@@ -24,6 +22,10 @@ We have our cross validation training and preprocessing functions with hyper par
 **Image Data Set**
 
 All the receipt images we used in our project were downloaded from Kaggle. Each image has a JSON file containing important information such as "total" and "dates." We used the pre-trained solution to validate and improve our algorithm and find the accuracy.
+
+**Documents**
+
+All other documents, such as the project proposal, Milestones 1 and 2, and the demo poster, are stored in the document folder.
 
 **Pre-Processing**
 
