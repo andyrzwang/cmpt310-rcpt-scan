@@ -11,6 +11,8 @@ Daniel Shi, Farzan Ustad and Andy Wang
 
 The project finds the total from a receipt photo and extracting that into text, this can also reads a folder of receipts and export a csv file. This is useful when users may want to keep track of receipt totals but do not want to manually input it every time.
 
+> Notes: All other documents, such as the project proposal, Milestones 1 and 2, and the demo poster, are stored in the document folder.
+
 
 ## Structure of the Project
 
