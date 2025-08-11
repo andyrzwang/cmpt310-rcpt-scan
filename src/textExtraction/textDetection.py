@@ -37,10 +37,15 @@ def findTotal(lines, ocr_data):
     lines = clean and sorted of ocr_data
     '''
     # fakeTotal.json is a list of words that represents fake total text
-    with open('src\\textExtraction\\fakeTotal.json', 'r') as f:
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+    fake_path = os.path.join(current_dir, 'fakeTotal.json')
+    true_path = os.path.join(current_dir, 'trueTotal.json')
+
+    with open(fake_path, 'r', encoding='utf-8') as f:
         fake_data = json.load(f)
-    with open('src\\textExtraction\\trueTotal.json', 'r') as f:
+    with open(true_path, 'r', encoding='utf-8') as f:
         true_data = json.load(f)
+
     
     fake_total_list = fake_data.get('fakeTotalList', [])
     true_total_list = true_data.get('trueTotalList', [])
@@ -106,6 +111,7 @@ def text_detection(image, original_image, image_file_Path):
 
     # Clean the dataframe
     ocr_data = ocr_data.dropna(subset=['text'])
+    ocr_data['text'] = ocr_data['text'].astype(str)  # Ensure all text entries are strings
     ocr_data = ocr_data[ocr_data['text'].str.strip() != '']
 
     # Store OCR data to csv
